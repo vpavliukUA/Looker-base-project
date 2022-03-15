@@ -1,4 +1,4 @@
-view: ext_email_events {
+view: ext_email_events_raw {
   sql_table_name: "BASE"."EXT_EMAIL_EVENTS"
     ;;
 
@@ -193,17 +193,5 @@ view: ext_email_events {
   measure: count {
     type: count
     drill_fields: []
-  }
-
-  measure: open_count {
-    type: count
-    filters: [event_type: "emailOpen"]
-  }
-
-  measure: click_count_unique {
-    type: count_distinct
-    sql: CONCAT(${subscription_id}, ${message_id}  ;;
-    filters: [event_type: "emailClick"]
-    drill_fields: [message_id, message_group_id, program_id]
   }
 }

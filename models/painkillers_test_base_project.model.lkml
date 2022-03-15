@@ -2,6 +2,7 @@ connection: "sub_test_connection"
 
 # include all the views
 include: "/views/**/*.view"
+include: "/views/*.view"
 
 explore: databasechangelog {}
 
