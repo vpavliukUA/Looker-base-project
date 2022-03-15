@@ -190,9 +190,81 @@ view: ext_email_events {
     sql: ${TABLE}."YEAR" ;;
   }
 
+  # custom dimensions and measures
+
+  ################### bounce aggregates
+
+  measure: bounce_count {
+    type: count
+    filters: [event_type: "emailBounce"]
+  }
+
+  measure: bounce_count_soft {
+    type: count
+    filters: [event_type: "emailBounce", event_details: "S"]
+  }
+
+  measure: bounce_count_hard {
+    type: count
+    filters: [event_type: "emailBounce", event_details: "H"]
+  }
+
+  measure: bounce_rate {
+    type: number
+    sql: ${bounce_count} /  NULLIF(${send_count},0) ;;
+  }
+
+  measure: bounce_rate_soft {
+    type: number
+    sql: ${bounce_count_soft} /  NULLIF(${send_count},0) ;;
+  }
+
+  measure: bounce_rate_hard {
+    type: number
+    sql: ${bounce_count_hard} /  NULLIF(${send_count},0) ;;
+  }
+
+  ################### delivery aggregates
+
+  measure: delivery_count {
+    type: number
+    sql: ${send_count} - ${bounce_count} ;;
+  }
+
+  measure: delivery_rate {
+    type: number
+    sql: ${delivery_count} / NULLIF(${send_count}, 0) ;;
+    value_format_name: "percent_1"
+  }
+
+
+  dimension: event_hour_of_day {
+    type: number
+    sql: hour(${event_time}::timestamp);;
+  }
+
+  dimension: parts_of_day {
+    case: {
+      when: {
+        sql: ${event_hour_of_day} >= 0 AND ${event_hour_of_day} < 12 ;;
+        label: "Morning"
+      }
+      when: {
+        sql: ${event_hour_of_day} >= 12 AND ${event_hour_of_day} < 18 ;;
+        label: "Afternoon"
+      }
+      else: "Evening"
+    }
+  }
+
   measure: count {
     type: count
     drill_fields: []
+  }
+
+  measure: send_count {
+    type: count
+    filters: [event_type: "emailSend"]
   }
 
   measure: open_count {
@@ -200,10 +272,48 @@ view: ext_email_events {
     filters: [event_type: "emailOpen"]
   }
 
+  measure: open_count_unique {
+    type: count_distinct
+    sql: ${customer_id} ;;
+    filters: [event_type: "emailOpen"]
+  }
+
+  measure: open_rate_unique {
+    type: number
+    sql: ${open_count_unique} / NULLIF(${delivery_count}, 0) ;;
+    value_format_name: "percent_1"
+  }
+
   measure: click_count_unique {
     type: count_distinct
-    sql: CONCAT(${subscription_id}, ${message_id}  ;;
+    sql: ${customer_id}  ;;
     filters: [event_type: "emailClick"]
-    drill_fields: [message_id, message_group_id, program_id]
+    drill_fields: [message_id, message_group_id]
+  }
+
+  measure: click_rate_unique {
+    type: number
+    sql: ${click_count_unique} / NULLIF(${delivery_count}, 0) ;;
+    value_format_name: "percent_1"
+  }
+
+  measure: click_to_open_ratio_unique {
+    type: number
+    sql: ${click_count_unique} / NULLIF(${open_count_unique}, 0) ;;
+    value_format_name: "percent_1"
+  }
+
+  ################### unsubscripe aggregates
+
+  measure: unsubscribe_count {
+    type: count_distinct
+    sql: ${customer_id}  ;;
+    filters: [event_type: "emailOptOut"]
+  }
+
+  measure: unsubscribe_rate {
+    type: number
+    sql: ${unsubscribe_count} / NULLIF(${delivery_count}, 0) ;;
+    value_format_name: "percent_1"
   }
 }
