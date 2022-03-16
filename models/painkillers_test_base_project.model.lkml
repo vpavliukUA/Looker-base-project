@@ -1,4 +1,4 @@
-connection: "sub_test_connection"
+connection: "@{db_connection}"
 
 # include all the views
 include: "/views/**/*.view"
