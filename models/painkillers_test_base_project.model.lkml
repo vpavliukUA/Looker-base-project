@@ -1,4 +1,4 @@
-connection: "@{db_connection}"
+connection: "acoustic_dev01"
 
 # include all the views
 include: "/views/**/*.view"
