@@ -1,4 +1,4 @@
-connection: "acoustic_dev01"
+connection: "painkillers_datalake01"
 
 # include all the views
 include: "/views/**/*.view"
