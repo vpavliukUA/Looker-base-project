@@ -1,4 +1,4 @@
-connection: "direct_snowflake_new_insights"
+connection: "painkillers_datalake01"
 
 # include all the views
 include: "/views/**/*.view"
