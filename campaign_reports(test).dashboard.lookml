@@ -1,5 +1,5 @@
-- dashboard: campaign_reports_from_snowflake_data
-  title: Campaign reports from Snowflake data
+- dashboard: default_reports_test
+  title: Default reports (test)
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
@@ -9,17 +9,17 @@
     model: painkillers_test_base_project
     explore: ext_email_events
     type: looker_donut_multiples
-    fields: [ext_email_events.click_count_unique, ext_email_events.parts_of_day, ext_email_events.event_date]
+    fields: [ext_email_events.event_date, ext_email_events.parts_of_day, ext_email_events.click_count_unique]
     pivots: [ext_email_events.parts_of_day]
     fill_fields: [ext_email_events.event_date, ext_email_events.parts_of_day]
-    sorts: [ext_email_events.click_count_unique desc 0, ext_email_events.event_date,
-      ext_email_events.parts_of_day]
+    filters:
+      ext_email_events.event_date: 3 days
+    sorts: [ext_email_events.event_date desc, ext_email_events.parts_of_day]
     limit: 500
-    show_value_labels: false
-    font_size: 12
+    show_value_labels: true
+    font_size: 11
     charts_across: 1
-    value_labels: legend
-    label_type: labPer
+    hide_legend: false
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -41,117 +41,24 @@
     label_density: 25
     x_axis_scale: auto
     y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    defaults_version: 1
-    series_types: {}
     show_null_points: true
     interpolation: linear
+    defaults_version: 1
+    series_types: {}
     listen: {}
     row: 0
     col: 0
     width: 6
-    height: 15
-  - title: Overall engagement KPIs
-    name: Overall engagement KPIs
-    model: painkillers_test_base_project
-    explore: ext_email_events
-    type: marketplace_viz_multiple_value::multiple_value-marketplace
-    fields: [ext_email_events.open_rate_unique, ext_email_events.click_rate_unique,
-      ext_email_events.click_to_open_ratio_unique]
-    limit: 500
-    hidden_fields: []
-    hidden_points_if_no: []
-    series_labels: {}
-    show_view_names: false
-    font_size_main: '16'
-    orientation: auto
-    style_ext_email_events.open_rate_unique: "#5A5D77"
-    show_title_ext_email_events.open_rate_unique: true
-    title_override_ext_email_events.open_rate_unique: Open rate (unique)
-    title_placement_ext_email_events.open_rate_unique: below
-    value_format_ext_email_events.open_rate_unique: ''
-    style_ext_email_events.click_rate_unique: "#5A5D77"
-    show_title_ext_email_events.click_rate_unique: true
-    title_override_ext_email_events.click_rate_unique: Click rate (unique)
-    title_placement_ext_email_events.click_rate_unique: below
-    value_format_ext_email_events.click_rate_unique: ''
-    show_comparison_ext_email_events.click_rate_unique: false
-    style_ext_email_events.click_to_open_ratio_unique: "#5A5D77"
-    show_title_ext_email_events.click_to_open_ratio_unique: true
-    title_override_ext_email_events.click_to_open_ratio_unique: Click-to-open rate
-      (unique)
-    title_placement_ext_email_events.click_to_open_ratio_unique: below
-    value_format_ext_email_events.click_to_open_ratio_unique: ''
-    show_comparison_ext_email_events.click_to_open_ratio_unique: false
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: ''
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    font_size: 12
-    charts_across: 1
-    value_labels: legend
-    label_type: labPer
-    defaults_version: 0
-    series_types: {}
-    show_null_points: true
-    interpolation: linear
-    show_row_numbers: true
-    transpose: false
-    truncate_text: true
-    hide_totals: false
-    hide_row_totals: false
-    size_to_fit: true
-    table_theme: white
-    enable_conditional_formatting: false
-    header_text_alignment: left
-    header_font_size: 12
-    rows_font_size: 12
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    custom_color_enabled: true
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    listen: {}
-    row: 0
-    col: 6
-    width: 18
-    height: 4
-  - title: Sent and unsubscribers vs day
-    name: Sent and unsubscribers vs day
+    height: 13
+  - title: Sent and unsubscribes vs days
+    name: Sent and unsubscribes vs days
     model: painkillers_test_base_project
     explore: ext_email_events
     type: looker_line
     fields: [ext_email_events.event_date, ext_email_events.send_count, ext_email_events.unsubscribe_count]
     fill_fields: [ext_email_events.event_date]
+    filters:
+      ext_email_events.event_date: 10 days
     sorts: [ext_email_events.event_date desc]
     limit: 500
     x_axis_gridlines: false
@@ -161,7 +68,7 @@
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
-    show_x_axis_label: false
+    show_x_axis_label: true
     show_x_axis_ticks: true
     y_axis_scale_mode: linear
     x_axis_reversed: false
@@ -178,90 +85,43 @@
     y_axis_combined: true
     show_null_points: true
     interpolation: linear
-    color_application: undefined
+    color_application:
+      collection_id: 7c56cc21-66e4-41c9-81ce-a60e1c3967b2
+      palette_id: 5d189dfc-4f46-46f3-822b-bfb0b61777b1
+      options:
+        steps: 5
     y_axes: [{label: '', orientation: left, series: [{axisId: ext_email_events.send_count,
             id: ext_email_events.send_count, name: Sent}, {axisId: ext_email_events.unsubscribe_count,
             id: ext_email_events.unsubscribe_count, name: Unsubscribers}], showLabels: true,
         showValues: true, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
-    limit_displayed_rows_values:
-      show_hide: hide
-      first_last: first
-      num_rows: 0
+    x_axis_label: Day
     hide_legend: false
     series_types:
       ext_email_events.send_count: column
     series_colors:
-      ext_email_events.unsubscribe_count: "#121a3f"
+      ext_email_events.send_count: "#079c98"
+      ext_email_events.unsubscribe_count: "#80868B"
     series_labels:
       ext_email_events.send_count: Sent
       ext_email_events.unsubscribe_count: Unsubscribers
-    swap_axes: false
-    discontinuous_nulls: false
     defaults_version: 1
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    value_labels: legend
-    label_type: labPer
-    map_plot_mode: points
-    heatmap_gridlines: false
-    heatmap_gridlines_empty: false
-    heatmap_opacity: 0.5
-    show_region_field: true
-    draw_map_labels_above_data: true
-    map_tile_provider: light
-    map_position: fit_data
-    map_scale_indicator: 'off'
-    map_pannable: true
-    map_zoomable: true
-    map_marker_type: circle
-    map_marker_icon_name: default
-    map_marker_radius_mode: proportional_value
-    map_marker_units: meters
-    map_marker_proportional_scale_type: linear
-    map_marker_color_mode: fixed
-    show_legend: true
-    quantize_map_value_colors: false
-    reverse_map_value_colors: false
-    custom_color_enabled: true
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    hidden_fields: []
-    hidden_points_if_no: []
-    groupBars: true
-    labelSize: 10pt
-    showLegend: true
-    ordering: none
-    show_null_labels: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    up_color: false
-    down_color: false
-    total_color: false
     listen: {}
-    row: 4
+    row: 0
     col: 6
     width: 18
-    height: 5
+    height: 6
   - title: Overall optimization metrics
     name: Overall optimization metrics
     model: painkillers_test_base_project
     explore: ext_email_events
     type: looker_column
-    fields: [ext_email_events.click_to_open_ratio_unique, ext_email_events.open_rate_unique,
-      ext_email_events.event_date]
+    fields: [ext_email_events.event_date, ext_email_events.click_to_open_ratio_unique,
+      ext_email_events.open_rate_unique]
     fill_fields: [ext_email_events.event_date]
-    sorts: [ext_email_events.event_date desc]
+    filters:
+      ext_email_events.event_date: 3 days
+    sorts: [ext_email_events.event_date]
     limit: 500
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -286,26 +146,31 @@
     x_axis_scale: auto
     y_axis_combined: true
     ordering: none
-    show_null_labels: false
+    show_null_labels: true
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: ext_email_events.click_to_open_ratio_unique,
+            id: ext_email_events.click_to_open_ratio_unique, name: Click-to-open ratio
+              (unique)}, {axisId: ext_email_events.open_rate_unique, id: ext_email_events.open_rate_unique,
+            name: Open rate (unique)}], showLabels: true, showValues: true, unpinAxis: false,
+        tickDensity: default, tickDensityCustom: 5, type: linear}]
+    x_axis_label: ''
     limit_displayed_rows_values:
       show_hide: hide
       first_last: first
       num_rows: 0
     series_types: {}
+    series_colors:
+      ext_email_events.click_to_open_ratio_unique: "#079c98"
+      ext_email_events.open_rate_unique: "#1A73E8"
     series_labels:
       ext_email_events.click_to_open_ratio_unique: Click-to-open ratio (unique)
       ext_email_events.open_rate_unique: Open rate (unique)
-    column_spacing_ratio: 0.1
-    column_group_spacing_ratio:
-    show_dropoff: false
     show_null_points: true
     interpolation: linear
     defaults_version: 1
-    listen: {}
-    row: 9
+    row: 6
     col: 6
     width: 18
-    height: 6
+    height: 5
