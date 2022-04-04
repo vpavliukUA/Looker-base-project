@@ -10,8 +10,12 @@ explore: databasechangelog {}
 explore: databasechangeloglock {}
 
 explore: ext_email_events {
-  always_filter: {
-    filters: [ext_email_events.subscription_id: "b005b14cb4049f51ea186089e52d8a6278ad9882"]
+  # always_filter: {
+  #   filters: [ext_email_events.subscription_id: "b005b14cb4049f51ea186089e52d8a6278ad9882"]
+  # }
+  access_filter: {
+    field: ext_email_events.subscription_id
+    user_attribute: subscription_id
   }
 }
 
