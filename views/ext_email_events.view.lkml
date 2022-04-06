@@ -306,8 +306,7 @@ view: ext_email_events {
   ################### unsubscripe aggregates
 
   measure: unsubscribe_count {
-    type: count_distinct
-    sql: CONCAT(${subscription_id}, ${customer_id})  ;;
+    type: count
     filters: [event_type: "emailOptOut"]
   }
 
