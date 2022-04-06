@@ -289,7 +289,8 @@ view: ext_email_events {
   }
 
   measure: click_count_unique {
-    type: count
+    type: count_distinct
+    sql: CONCAT(${subscription_id}, ${contact_id}) ;;
     filters: [event_type: "emailClick"]
     drill_fields: [message_id, message_group_id]
   }
