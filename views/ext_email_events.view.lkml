@@ -101,6 +101,11 @@ view: ext_email_events {
     sql: ${TABLE}."LINK_ID" ;;
   }
 
+  dimension: contact_id {
+    type: string
+    sql: ${TABLE}."CONTACT_ID" ;;
+  }
+
   dimension: message_body_type {
     type: string
     sql: ${TABLE}."MESSAGE_BODY_TYPE" ;;
