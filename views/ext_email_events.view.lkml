@@ -273,8 +273,7 @@ view: ext_email_events {
   }
 
   measure: open_count_unique {
-    type: count_distinct
-    sql: CONCAT(${subscription_id}, ${customer_id}) ;;
+    type: count
     filters: [event_type: "emailOpen"]
   }
 
