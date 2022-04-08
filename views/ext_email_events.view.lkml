@@ -290,6 +290,12 @@ view: ext_email_events {
   }
 
   measure: click_count_unique {
+    type: count
+    filters: [event_type: "emailClick"]
+    drill_fields: [message_id, message_group_id]
+  }
+
+  measure: click_count_unique_unique {
     type: count_distinct
     sql: CONCAT(${subscription_id}, ${contact_id}) ;;
     filters: [event_type: "emailClick"]
@@ -298,13 +304,13 @@ view: ext_email_events {
 
   measure: click_rate_unique {
     type: number
-    sql: ${click_count_unique} / NULLIF(${delivery_count}, 0) ;;
+    sql: ${click_count_unique_unique} / NULLIF(${delivery_count}, 0) ;;
     value_format_name: "percent_1"
   }
 
   measure: click_to_open_ratio_unique {
     type: number
-    sql: ${click_count_unique} / NULLIF(${open_count_unique}, 0) ;;
+    sql: ${click_count_unique_unique} / NULLIF(${open_count_unique}, 0) ;;
     value_format_name: "percent_1"
   }
 
